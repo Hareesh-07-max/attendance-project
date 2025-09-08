@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Attendance System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .btn {
+      background: #3498db;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background: #2980b9;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    th {
+      background: #3498db;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Smart QR-Based Student Attendance System</h1>
+  <p>Scan your QR code to mark attendance.</p>
+  
+  <a class="btn" href="https://forms.gle/b6HC3QhihL4iW5aQ8" target="_blank">Mark Attendance</a>
+  
+  <h2>📊 Attendance Summary</h2>
+  <table id="attendanceTable">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Roll Number</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function loadAttendance() {
+      const response = await fetch("https://docs.google.com/spreadsheets/d/1HA2iN2wmwGbCroDJkL7PQcJFCZ-tEbq6nZ_swO3C-0E/edit?usp=sharing");
+      const data = await response.text();
+      const rows = data.split("\n").slice(1); // Skip header row
+      
+      let table = document.querySelector("#attendanceTable tbody");
+      table.innerHTML = "";
+      
+      rows.forEach(row => {
+        let cols = row.split(",");
+        if (cols.length > 1) {
+          let tr = document.createElement("tr");
+          tr.innerHTML = `<td>${cols[0]}</td><td>${cols[1]}</td><td>${cols[2] || "-"}</td>`;
+          table.appendChild(tr);
+        }
+      });
+    }
+    
+    loadAttendance();
+    setInterval(loadAttendance, 10000); // Refresh every 10s
+  </script>
+</body>
+</html>
