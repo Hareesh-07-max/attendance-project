@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Student Attendance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+  </style>
+  <script>
+    window.onload = function () {
+      // Get roll number from QR link (example: ?roll=R230557)
+      const urlParams = new URLSearchParams(window.location.search);
+      const roll = urlParams.get("roll");
+
+      if (roll) {
+        // Replace FORM_ID and entry.123456 with your actual values
+        const formURL =
+          "https://docs.google.com/forms/d/e/FORM_ID/viewform?usp=pp_url&entry.123456=" +
+          roll;
+
+        // Set the form inside iframe
+        document.getElementById("formFrame").src = formURL;
+      } else {
+        document.body.innerHTML = "<h2>❌ Roll number missing in QR link</h2>";
+      }
+    };
+  </script>
+</head>
+<body>
+  <h2>📌 Student Attendance Form</h2>
+  <p>Roll number will be filled automatically</p>
+
+  <!-- Google Form loads here -->
+  <iframe id="formFrame"></iframe>
+</body>
+</html>
