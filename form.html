@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Attendance Form</title>
+  <meta charset="UTF-8">
+  <title>Student Attendance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    iframe {
+      width: 100%;
+      max-width: 640px;
+      height: 800px;
+      border: none;
+    }
+  </style>
 </head>
 <body>
-    <h2>Attendance</h2>
-    <iframe src="YOUR_GOOGLE_FORM_EMBED_LINK" width="640" height="800"></iframe>
+  <h2>Student Attendance</h2>
+  <p>Your roll number will be auto-filled below.</p>
+  <div id="form-container">
+    <iframe id="attendance-form" src=""></iframe>
+  </div>
+
+  <script>
+    // Read the 'roll' parameter from the URL
+    const params = new URLSearchParams(window.location.search);
+    const roll = params.get("roll") || "";
+
+    if (roll) {
+      // Build the pre-filled form URL
+      const formURL = `https://docs.google.com/forms/d/e/1FAIpQLScDGpYFaIiFSwMRHOTRD6EDJ7VSzfAeMItB1KBgsCY-W_g3Og/viewform?usp=pp_url&entry.22489632=${encodeURIComponent(roll)}`;
+      document.getElementById("attendance-form").src = formURL;
+    } else {
+      document.getElementById("form-container").innerHTML = "<p style='color:red;'>Error: roll number missing in QR link.</p>";
+    }
+  </script>
 </body>
 </html>
